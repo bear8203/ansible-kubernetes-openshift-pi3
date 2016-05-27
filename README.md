@@ -63,18 +63,18 @@ Most of the installation is automated by using [Ansible](https://www.ansible.com
 
 ## Network Setup
 
-sudo nano /etc/dhcpcd.conf
+        sudo nano /etc/dhcpcd.conf
 
 (at the first line)
-static ip_address=192.168.0.200/24   #200-master, 201-2nd node, 202-3rd node...
-static routers=192.168.0.1
-static domain_name_servers=192.168.0.1
+        static ip_address=192.168.0.200/24   #200-master, 201-2nd node, 202-3rd node...
+        static routers=192.168.0.1
+        static domain_name_servers=192.168.0.1
 
-interface eth0 
-fallback static_eth0
+        interface eth0 
+        fallback static_eth0
 
 (ctrl-o to save, ctrl-x to exit)
-sudo reboot
+        sudo reboot
 
 (at MAC connect with "ssh pi@192.168.0.200")
 
