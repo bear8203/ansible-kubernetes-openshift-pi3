@@ -63,27 +63,20 @@ Most of the installation is automated by using [Ansible](https://www.ansible.com
 
 ## Network Setup
 
-It is now time to configure your WLAN router. This of course depends on which router you use. The following instructions are based on a [TP-Link TL-WR802N](http://www.tp-link.de/products/details/TL-WR802N.html) which is quite inexepensive but still absolutely ok for our purposes since it sits very close to the cluster and my notebook anyway.
+sudo nano /etc/dhcpcd.conf
 
-First of all you need to setup the SSID and password. Use the same credentials with which you have configured your images.
+(at the first line)
+static ip_address=192.168.0.200/24   #200-master, 201-2nd node, 202-3rd node...
+static routers=192.168.0.1
+static domain_name_servers=192.168.0.1
 
-My setup is, that I span a private network `192.168.23.0/24` for the Pi cluster which my MacBook also joins via its integrated WiFi.
+interface eth0 
+fallback static_eth0
 
-The addresses I have chosen are :
+(ctrl-o to save, ctrl-x to exit)
+sudo reboot
 
-| IP                                    | Device          |
-| ------------------------------------- | --------------- |
-| `192.168.23.1`                        | WLAN Router     |
-| `192.168.23.100`                      | MacBook's WLAN  |
-| `192.168.23.200` ... `192.168.23.203` | Raspberry Pis   |
-
-The MacBook is setup for NAT and forwarding from this private network to the internet. This [script](https://github.com/Project31/ansible-kubernetes-openshift-pi3/blob/master/tools/setup_nat_on_osx.sh) helps in setting up the forwarding and NAT rules on OS X.
-
-In order to configure your WLAN router you need to connect to it according to its setup instructions. The router is setup in **Access Point** mode with DHCP enabled. As soon as the MAC of the Pis are known (which you can see as soon as they connect for the first time via WiFi), I configured them to always use the same DHCP lease. For the TL-WR802N this can be done in the configuration section *DHCP -> Address Reservation*. In the *DHCP -> DHCP-Settings* the default gateway is set to `192.168.23.100`, which my notebook's WLAN IP.
-
-Startup all nodes, you should be able to ping every node in your cluster. I added `n0` ... `n3` to my notebook's `/etc/hosts` pointing to `192.168.23.200` ... `192.168.23.203` for convenience.
-
-You should be able to ssh into every Pi with user *pi* and password *raspberry*. Also, if you set up the forwarding on your desktop properly you should be able to ping from within the pi to the outside world.
+(at MAC connect with "ssh pi@192.168.0.200")
 
 ## Ansible Playbooks
 
