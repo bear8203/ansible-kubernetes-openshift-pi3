@@ -86,6 +86,7 @@ After this initial setup is done, the next step is to initialize the base system
 
 1. Checkout the Ansible playbooks:
 
+        apt-get install git
         git clone https://github.com/Project31/ansible-kubernetes-openshift-pi3.git k8s-pi
         cd k8s-pi
 
